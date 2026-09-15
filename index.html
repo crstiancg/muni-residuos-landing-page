@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Módulo de Gestión Integral de Residuos Sólidos - Muni Puno Digital</title>
+    <meta name="description" content="Plataforma institucional de gestión de residuos sólidos, consulta de las 29 rutas de recolección, segregación en la fuente, reportes vecinales y programa de compostaje de la Municipalidad Provincial de Puno." />
+    <meta property="og:title" content="Módulo de Gestión Integral de Residuos Sólidos - Muni Puno Digital" />
+    <meta property="og:description" content="Plataforma institucional de gestión de residuos sólidos, consulta de las 29 rutas de recolección, segregación en la fuente, reportes vecinales y programa de compostaje de la Municipalidad Provincial de Puno." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    <script>
+      window.tailwind = {
+        config: {
+          theme: {
+            extend: {
+              colors: {
+                puno: {
+                  blue: '#0081C0',        // Celeste institucional (NUEVO - color principal de acento)
+                  navy: '#0B335E',        // Azul noche (mantener para fondos críticos y textos)
+                  sky: '#0081C0',         // Alias del nuevo celeste
+                  skyLight: '#3399D1',    // Variante clara para hover suave
+                  skyDark: '#006699',     // Variante oscura para hover profundo
+                  gold: '#E5A91E',
+                  green: '#15803D',
+                }
+              }
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="bg-[#F8FAFC] text-[#0F172A] font-sans antialiased selection:bg-[#0081C0] selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
