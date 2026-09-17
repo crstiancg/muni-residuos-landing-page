@@ -12,7 +12,8 @@ import {
   Navigation,
   ShieldCheck,
   CheckCircle2,
-  Sparkles
+  Sparkles,
+  Recycle
 } from 'lucide-react';
 
 export interface HeroSectionProps {
@@ -42,17 +43,17 @@ interface SlideItem {
 const HERO_SLIDES: SlideItem[] = [
   {
     id: 'slide-rutas',
-    badge: 'Sistema Satelital GPS',
+    badge: 'Registro en vivo',
     badgeIcon: Navigation,
     badgeColor: 'bg-[#0081C0]/30 text-sky-100 border-sky-300/30',
-    title: 'Monitoreo en Vivo de las',
-    highlightText: '29 Rutas de Recolección',
+    title: 'Monitoreo en Vivo de',
+    highlightText: 'las 29 Rutas',
     subtitle: 'Sigue el recorrido de los camiones compactadores en tiempo real desde tu celular y recibe avisos de campana en tu cuadra.',
     ctaText: 'Ver las 29 Rutas',
     targetSection: 'rutas',
     secondaryCtaText: 'Descargar App',
     secondaryTargetSection: 'descargar-app',
-    image: 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=1920&q=80',
+    image: '/images/29-rutas.jpg',
     imageAlt: 'Monitoreo satelital y flota de recolección en Puno',
     accentColor: '#0081C0',
     stats: [
@@ -62,18 +63,39 @@ const HERO_SLIDES: SlideItem[] = [
     ]
   },
   {
+    id: 'slide-segregacion',
+    badge: 'Segregación Correcta',
+    badgeIcon: Recycle,
+    badgeColor: 'bg-[#0081C0]/30 text-sky-100 border-sky-300/30',
+    title: 'Separa tus residuos en',
+    highlightText: '4 colores',
+    subtitle: 'Aprende a clasificar tus residuos desde casa: orgánicos, aprovechables, no aprovechables y peligrosos. Una correcta segregación facilita el reciclaje y el compostaje en Puno.',
+    ctaText: 'Aprender a Segregar',
+    targetSection: 'segregacion',
+    secondaryCtaText: 'Ver Tachos',
+    secondaryTargetSection: 'segregacion',
+    image: '/images/segregacion-puno.jpg',
+    imageAlt: 'Tachos de segregación de residuos en Puno: no aprovechables, orgánicos, aprovechables y peligrosos',
+    accentColor: '#0081C0',
+    stats: [
+      { label: 'Tachos Oficiales', value: '4 Colores' },
+      { label: 'Separa en Casa', value: '100%' },
+      { label: 'Impacto Directo', value: 'Reciclaje' }
+    ]
+  },
+  {
     id: 'slide-reportes',
     badge: 'Fiscalización Ciudadana',
     badgeIcon: AlertTriangle,
     badgeColor: 'bg-amber-500/30 text-amber-100 border-amber-300/30',
-    title: 'Reporta a tu Vecino y',
-    highlightText: 'Puntos Críticos',
+    title: 'Reporta a tu Vecino',
+    highlightText: '',
     subtitle: 'Denuncia botaderos clandestinos y malas prácticas de disposición de residuos en tu barrio con fotografía georreferenciada.',
     ctaText: 'Reportar Ahora',
     targetSection: 'reporta',
     secondaryCtaText: 'Conocer Sanciones',
     secondaryTargetSection: 'reporta',
-    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1920&q=80',
+    image: '/images/reporte-al-vecino.jpg',
     imageAlt: 'Fiscalización ambiental y calles limpias en Puno',
     accentColor: '#E5A91E',
     stats: [
@@ -88,13 +110,13 @@ const HERO_SLIDES: SlideItem[] = [
     badgeIcon: Sprout,
     badgeColor: 'bg-emerald-500/30 text-emerald-100 border-emerald-300/30',
     title: 'Programa Municipal de',
-    highlightText: 'Compostaje Domiciliario',
+    highlightText: 'Compostaje',
     subtitle: 'Inscríbete gratis al programa municipal y recibe tu compostera con kit de microorganismos para transformar tus residuos en abono fértil.',
     ctaText: 'Inscribirme al Programa',
     targetSection: 'compostaje',
     secondaryCtaText: 'Calcular Impacto',
     secondaryTargetSection: 'compostaje',
-    image: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb22509?auto=format&fit=crop&w=1920&q=80',
+    image: '/images/compostaje.jpg',
     imageAlt: 'Compostaje domiciliario y abono orgánico en Puno',
     accentColor: '#15803D',
     stats: [
@@ -108,14 +130,14 @@ const HERO_SLIDES: SlideItem[] = [
     badge: 'Cuidado del Lago Titicaca',
     badgeIcon: HeartHandshake,
     badgeColor: 'bg-sky-500/30 text-sky-100 border-sky-300/30',
-    title: 'Sumac Ayni: Voluntariado y',
-    highlightText: 'Campañas Ambientales',
+    title: 'Sumac Ayni',
+    highlightText: '',
     subtitle: 'Súmate a las grandes jornadas de limpieza de la bahía interior del Lago Titicaca, ecotrueques barriales y educación ambiental.',
     ctaText: 'Ver Campañas Activas',
     targetSection: 'sumac-ayni',
     secondaryCtaText: 'Segregación en Fuente',
     secondaryTargetSection: 'segregacion',
-    image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1920&q=80',
+    image: '/images/sumac-ayni.jpg',
     imageAlt: 'Campañas de limpieza y voluntariado ambiental en Puno',
     accentColor: '#0B335E',
     stats: [
@@ -241,15 +263,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <img
               src={slide.image}
               alt={slide.imageAlt}
-              className={`w-full h-full object-cover object-center transform transition-transform duration-10000 ease-out ${
+              referrerPolicy="no-referrer"
+              className={`w-full h-full object-cover object-[center_60%] transform transition-transform duration-10000 ease-out ${
                 isActive ? 'scale-105' : 'scale-100'
               }`}
               loading={index === 0 ? 'eager' : 'lazy'}
             />
 
-            {/* Carefully calibrated multi-layer gradient overlay (transición de navy a celeste) */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0B335E]/85 via-[#0081C0]/60 to-[#3399D1]/30"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B335E]/80 via-transparent to-black/30"></div>
+            {/* Carefully calibrated multi-layer gradient overlay (protección de texto en degradé a transparente) */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0B335E]/95 via-[#0B335E]/70 via-60% to-transparent sm:from-[#0B335E]/90 sm:via-[#0B335E]/50 sm:via-40%"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B335E]/60 via-transparent to-black/20"></div>
 
             {/* Architectural Grid Micro-pattern overlay */}
             <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
@@ -271,7 +294,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
           {/* Main Headings (Sans-serif, font-extrabold) */}
           <div className="space-y-1 sm:space-y-2">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15] [text-shadow:_0_2px_8px_rgba(0,0,0,0.5)]">
               {activeSlide.title}{' '}
               <span className="text-white block sm:inline">
                 {activeSlide.highlightText}
@@ -280,7 +303,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
 
           {/* Subtitle / Description */}
-          <p className="text-base sm:text-lg lg:text-xl text-slate-100 leading-relaxed font-normal max-w-2xl text-shadow-sm">
+          <p className="text-base sm:text-lg lg:text-xl text-slate-100 leading-relaxed font-normal max-w-2xl [text-shadow:_0_1px_4px_rgba(0,0,0,0.6)]">
             {activeSlide.subtitle}
           </p>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Smartphone, MapPin, Recycle, AlertCircle, HeartHandshake, Sprout } from 'lucide-react';
+import { Menu, X, Smartphone, MapPin, AlertCircle, Recycle, HeartHandshake, Sprout } from 'lucide-react';
 
 interface HeaderProps {
   activeSection: string;
@@ -22,7 +22,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
   }, []);
 
   const navLinks = [
-    { id: 'rutas', label: '29 Rutas de Camiones', href: '#rutas', icon: MapPin },
+    { id: 'rutas', label: '29 Rutas', href: '#rutas', icon: MapPin },
     { id: 'segregacion', label: 'Segregación', href: '#segregacion', icon: Recycle },
     { id: 'reporta', label: 'Reporta al Vecino', href: '#reporta', icon: AlertCircle },
     { id: 'sumac-ayni', label: 'Sumac Ayni', href: '#sumac-ayni', icon: HeartHandshake },
@@ -43,15 +43,12 @@ export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
           
           {/* Compact Logo & Municipal Identity */}
           <a href="#" className="flex items-center gap-2.5 group shrink-0" id="header-logo">
-            <div
-              className={`w-9 h-9 rounded-lg flex items-center justify-center text-white transition-all duration-200 group-hover:scale-105 ${
-                isScrolled
-                  ? 'bg-gradient-to-br from-[#006699] to-[#0081C0] shadow-xs'
-                  : 'bg-white/15 backdrop-blur-md border border-white/25 shadow-xs'
-              }`}
-            >
-              <Recycle className="w-5 h-5 text-[#E5A91E]" />
-            </div>
+          <img
+            src="/images/escudo-puno.png"
+            alt="Escudo de Puno"
+            className="w-9 h-9 object-contain transition-transform duration-200 group-hover:scale-105"
+          />
+            
             <div className="flex items-center gap-1.5">
               <span
                 className={`text-base sm:text-lg font-bold tracking-tight transition-colors ${
@@ -60,16 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
                     : 'text-white group-hover:text-white/80'
                 }`}
               >
-                Muni Puno Digital
-              </span>
-              <span
-                className={`text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded transition-colors ${
-                  isScrolled
-                    ? 'bg-[#0081C0]/15 text-[#0B335E] border border-[#0081C0]/30'
-                    : 'bg-white/20 text-white border border-white/30 backdrop-blur-xs'
-                }`}
-              >
-                GGIRS
+                Municipalidad Provincial De Puno
               </span>
             </div>
           </a>
