@@ -5,7 +5,9 @@ import {
   Radio, 
   Compass, 
   AlertTriangle,
-  Info
+  Info,
+  Plus,
+  Minus
 } from 'lucide-react';
 
 export interface RouteMapProps {
@@ -73,9 +75,6 @@ export const RouteMap: React.FC<RouteMapProps> = ({
       zoomControl: false,
       scrollWheelZoom: true,
     });
-
-    // Zoom control in top right corner
-    L.control.zoom({ position: 'topright' }).addTo(map);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -316,48 +315,49 @@ export const RouteMap: React.FC<RouteMapProps> = ({
       {/* Leaflet Map DOM element */}
       <div ref={mapContainerRef} className="absolute inset-0 w-full h-full z-0" />
 
-      {/* Floating Map Overlay: Top-Left Route Title & Pulse */}
-      <div className="absolute top-3 left-3 z-[400] flex items-center gap-2 pointer-events-auto max-w-[calc(100%-130px)]">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#0B335E]/90 text-white backdrop-blur-md border border-white/20 shadow-md truncate">
-          <Radio className="w-3.5 h-3.5 text-[#E5A91E] shrink-0 animate-pulse" />
-          <span className="truncate">{routeName.split(':')[0]}</span>
-          <span className="w-1 h-3 bg-white/30 rounded-full mx-0.5 shrink-0"></span>
-          {isUnderConstruction ? (
-            <span className="inline-flex items-center gap-1.5 text-amber-300 font-semibold text-[11px] shrink-0">
-              <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-              Levantamiento GPS
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1.5 text-emerald-300 font-semibold text-[11px] shrink-0">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-              GPS Oficial WGS84
-            </span>
-          )}
-        </div>
-      </div>
+      {/* Controles del mapa unificados: Zoom In, Zoom Out, Centrar */}
+      <div className="absolute top-3 right-3 z-[400] flex flex-col rounded-xl overflow-hidden border border-slate-200 shadow-md bg-white pointer-events-auto">
+        {/* Zoom In */}
+        <button
+          onClick={() => mapInstanceRef.current?.zoomIn()}
+          title="Acercar"
+          aria-label="Acercar mapa"
+          className="w-9 h-9 flex items-center justify-center text-[#0B335E] hover:bg-slate-50 transition-colors cursor-pointer border-b border-slate-200"
+        >
+          <Plus className="w-4 h-4" />
+        </button>
 
-      {/* Floating Map Overlay: Top-Right "Centrar en ruta" Button (adjacent to Zoom Controls) */}
-      <div className="absolute top-2.5 right-13 sm:right-14 z-[400] pointer-events-auto">
+        {/* Zoom Out */}
+        <button
+          onClick={() => mapInstanceRef.current?.zoomOut()}
+          title="Alejar"
+          aria-label="Alejar mapa"
+          className="w-9 h-9 flex items-center justify-center text-[#0B335E] hover:bg-slate-50 transition-colors cursor-pointer border-b border-slate-200"
+        >
+          <Minus className="w-4 h-4" />
+        </button>
+
+        {/* Centrar */}
         <button
           onClick={handleCenter}
           id="btn-centrar-ruta"
-          title="Ajustar y centrar trazado en la pantalla"
-          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-[#0B335E] hover:bg-slate-50 hover:text-[#0081C0] border border-slate-200 shadow-md transition-all cursor-pointer"
+          title="Centrar ruta"
+          aria-label="Centrar ruta en pantalla"
+          className="w-9 h-9 flex items-center justify-center text-[#0B335E] hover:bg-slate-50 hover:text-[#0081C0] transition-colors cursor-pointer"
         >
-          <Maximize2 className="w-3.5 h-3.5 text-[#0081C0]" />
-          <span className="hidden sm:inline">Centrar</span>
+          <Maximize2 className="w-4 h-4" />
         </button>
       </div>
 
       {/* Banner de alerta: Si la ruta no tiene coordenadas validadas aún */}
       {isUnderConstruction && (
-        <div className="absolute top-14 left-3 right-3 sm:right-auto sm:max-w-md z-[400] pointer-events-auto">
+        <div className="absolute bottom-12 left-3 right-3 sm:right-auto sm:max-w-md z-[400] pointer-events-auto">
           <div className="bg-amber-500/95 backdrop-blur-md text-slate-900 border border-amber-600 rounded-xl px-3.5 py-2 shadow-lg flex items-start gap-2.5 text-xs">
             <AlertTriangle className="w-4 h-4 text-amber-950 shrink-0 mt-0.5" />
             <div className="space-y-0.5">
               <p className="font-bold text-amber-950">Ruta en construcción</p>
               <p className="text-[11px] text-amber-900 leading-snug">
-                El levantamiento de coordenadas WGS84 para este recorrido está en fase de validación técnica. 
+                El levantamiento de coordenadas para este recorrido está en fase de validación técnica. 
                 Se muestra un trazado preliminar referencial.
               </p>
             </div>
@@ -371,7 +371,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({
         <span>
           {isUnderConstruction
             ? 'Monitoreo preventivo • Frecuencia activa'
-            : 'Velocidad promedio: 18 km/h • WGS84 Georreferenciado'}
+            : 'Velocidad promedio: 18 km/h'}
         </span>
       </div>
     </div>

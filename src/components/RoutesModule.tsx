@@ -7,18 +7,70 @@ import {
   Truck, 
   ExternalLink,
   ChevronDown,
+  Navigation,
+  Shield,
 } from 'lucide-react';
 import { PUNO_ROUTES } from '../data/punoRoutesData';
 import { getRouteCoordinates } from '../data/route-coordinates';
 import { RouteDetail } from '../types';
 import { RouteDetailModal } from './RouteDetailModal';
 import { RouteMap } from './RouteMap';
+import { getThemeStyles } from '../config/sectionThemes';
 
 export const RoutesModule: React.FC = () => {
   const [selectedRouteId, setSelectedRouteId] = useState<string>('ruta-01');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [modalRoute, setModalRoute] = useState<RouteDetail | null>(null);
   const [showAllRoutes, setShowAllRoutes] = useState<boolean>(false);
+  const [isCardExpanded, setIsCardExpanded] = useState<boolean>(false);
+  const [startImgError, setStartImgError] = useState<boolean>(false);
+  const [endImgError, setEndImgError] = useState<boolean>(false);
+
+  // Mapeo de colores por sector (sectorCode)
+  const SECTOR_COLORS: Record<number, { bg: string; text: string; border: string }> = {
+    1: { bg: 'bg-[#0B335E]/40', text: 'text-blue-100', border: 'border-[#0B335E]/70' },       // Centro: navy
+    2: { bg: 'bg-[#1474B4]/40', text: 'text-sky-100', border: 'border-[#1474B4]/70' },       // Norte: celeste
+    3: { bg: 'bg-[#15803D]/40', text: 'text-emerald-100', border: 'border-[#15803D]/70' },   // Sur: verde
+    4: { bg: 'bg-[#E5A91E]/40', text: 'text-amber-100', border: 'border-[#E5A91E]/70' },     // Alta: dorado
+  };
+
+  // Mapeo de colores por turno
+  const SHIFT_COLORS: Record<string, { bg: string; text: string; border: string; icon: string }> = {
+    'Mañana': { 
+      bg: 'bg-amber-500/25', 
+      text: 'text-amber-100', 
+      border: 'border-amber-400/60',
+      icon: 'text-amber-300'
+    },
+    'Tarde': { 
+      bg: 'bg-orange-500/25', 
+      text: 'text-orange-100', 
+      border: 'border-orange-400/60',
+      icon: 'text-orange-300'
+    },
+    'Noche': { 
+      bg: 'bg-indigo-500/25', 
+      text: 'text-indigo-100', 
+      border: 'border-indigo-400/60',
+      icon: 'text-indigo-300'
+    },
+  };
+
+  // Mapeo semántico de las 4 métricas
+  const METRIC_COLORS = {
+    horario: '#38BDF8',      // Celeste claro
+    frecuencia: '#34D399',   // Verde claro
+    familias: '#FBBF24',     // Dorado claro
+    calles: '#A78BFA',       // Púrpura claro
+  };
+
+  // Wrapper to select route and reset card expansion state and image errors
+  const handleSelectRoute = (routeId: string) => {
+    setSelectedRouteId(routeId);
+    setIsCardExpanded(false);
+    setStartImgError(false);
+    setEndImgError(false);
+  };
 
   // Active highlighted route for map and info card
   const activeRoute = useMemo(() => {
@@ -61,107 +113,55 @@ export const RoutesModule: React.FC = () => {
 
   // Handle instant search suggestion pick
   const handleStreetSelect = (route: RouteDetail) => {
-    setSelectedRouteId(route.id);
+    handleSelectRoute(route.id);
     setSearchQuery('');
     setShowAllRoutes(false);
   };
 
   return (
-    <section id="rutas" className="py-14 sm:py-18 lg:py-20 bg-[#F8FAFC] border-b border-slate-200 relative overflow-hidden">
-      
-      {/* Subtle background micro-mesh texture */}
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-7 relative z-10">
+    <section
+      id="rutas"
+      className="pt-8 pb-14 sm:pt-10 sm:pb-18 lg:pt-12 lg:pb-20 relative overflow-hidden transition-colors duration-500 bg-white"
+      style={{
+        ...getThemeStyles('rutas'),
+        backgroundColor: '#FFFFFF',
+      }}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 sm:space-y-6 relative z-10">
         
         {/* 1. Section Header (Aligned Left) */}
-        <div className="text-left space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#0081C0]/15 text-[#0B335E] border border-[#0081C0]/30 uppercase tracking-wider">
-            <Truck className="w-3.5 h-3.5 text-[#0081C0]" />
-            <span>Sistema Integral de Limpieza Pública</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0B335E] tracking-tight">
-            29 Rutas de Recolección en Puno
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 font-normal max-w-3xl">
-            Consulta el recorrido georreferenciado, horarios programados y cobertura de calles por cuadrante urbano.
-          </p>
-        </div>
+        <div className="flex items-stretch gap-4 sm:gap-5">
+          {/* Línea decorativa vertical con gradiente */}
+          <div
+            className="w-1 sm:w-1.5 rounded-full shrink-0"
+            style={{
+              background: 'linear-gradient(to bottom, #0081C0 0%, #0081C0 50%, transparent 100%)',
+            }}
+          ></div>
 
-        {/* 2. Large Full-Width Street Search Bar */}
-        <div className="w-full">
-          <div className="relative bg-white rounded-2xl p-2 sm:p-2.5 shadow-sm border-2 border-slate-200 hover:border-slate-300 focus-within:border-[#0081C0] focus-within:ring-4 focus-within:ring-[#0081C0]/20 transition-all">
-            <div className="flex items-center gap-3 px-3">
-              <Search className="w-6 h-6 text-[#0081C0] shrink-0" />
-              <input
-                type="text"
-                id="input-buscador-calles"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Busca tu calle, jirón o barrio en las 29 rutas de Puno"
-                className="w-full text-sm sm:text-base lg:text-lg text-slate-800 placeholder-slate-400 bg-transparent border-none outline-hidden py-3 sm:py-4 font-medium"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="text-xs font-bold text-slate-500 hover:text-slate-700 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer transition-colors shrink-0"
-                >
-                  Limpiar
-                </button>
-              )}
+          {/* Contenido del header */}
+          <div className="text-left space-y-2 flex-1">
+            <div
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border uppercase tracking-wider"
+              style={{
+                backgroundColor: 'var(--section-accent-soft)',
+                color: 'var(--section-text-primary)',
+                borderColor: 'var(--section-accent)',
+              }}
+            >
+              <Truck className="w-3.5 h-3.5" style={{ color: 'var(--section-accent)' }} />
+              <span>Sistema Integral de Limpieza Pública</span>
             </div>
-
-            {/* Live Search Results Dropdown */}
-            {searchQuery.trim().length > 1 && (
-              <div className="mt-2 pt-2 border-t border-slate-100 px-2 max-h-64 overflow-y-auto space-y-1">
-                <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 px-2 py-1">
-                  Rutas con coincidencias ({searchResults.length})
-                </div>
-                {searchResults.length > 0 ? (
-                  searchResults.map((r) => {
-                    const q = searchQuery.toLowerCase().trim();
-                    const matchingStreets = r.coverageStreets.filter((s) =>
-                      s.toLowerCase().includes(q)
-                    );
-                    return (
-                      <button
-                        key={r.id}
-                        onClick={() => handleStreetSelect(r)}
-                        className="w-full text-left p-2.5 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer group border border-transparent hover:border-slate-200"
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2 truncate">
-                            <MapPin className="w-4 h-4 text-[#0081C0] shrink-0" />
-                            <span className="font-bold text-xs sm:text-sm text-[#0B335E] truncate group-hover:text-[#0081C0]">
-                              {r.name}
-                            </span>
-                            <span className="text-slate-500 text-[11px] hidden sm:inline">
-                              ({r.schedule})
-                            </span>
-                          </div>
-                          <span className="text-[11px] font-bold text-[#15803D] bg-emerald-50 px-2.5 py-1 rounded-md shrink-0">
-                            Ver ruta
-                          </span>
-                        </div>
-                        {matchingStreets.length > 0 && (
-                          <div className="mt-1 text-[11px] text-slate-500 pl-6 truncate">
-                            Calles coincidentes: <span className="text-slate-700 font-semibold">{matchingStreets.slice(0, 3).join(', ')}{matchingStreets.length > 3 ? '...' : ''}</span>
-                          </div>
-                        )}
-                      </button>
-                    );
-                  })
-                ) : (
-                  <div className="p-4 text-center text-xs text-slate-500">
-                    No se encontraron calles con el término "{searchQuery}". Prueba con otro jirón o avenida.
-                  </div>
-                )}
-              </div>
-            )}
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-[#0B335E] via-[#0B335E] to-[#0081C0] bg-clip-text text-transparent">
+              29 Rutas de Recolección en Puno
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 font-normal max-w-3xl leading-relaxed">
+              Consulta el recorrido georreferenciado, horarios programados y cobertura de calles por cuadrante urbano.
+            </p>
           </div>
         </div>
 
-        {/* 3. Route Access Tabs: Ruta 01 | Ruta 02 | Ruta 03 | Ruta 04 | Más Rutas (29) */}
+        {/* 2. Route Access Tabs: Ruta 01 | Ruta 02 | Ruta 03 | Ruta 04 | Más Rutas (29) */}
         <div className="space-y-3">
           <div className="flex items-center flex-wrap gap-2">
             {featuredTabs.map((r) => {
@@ -171,14 +171,25 @@ export const RoutesModule: React.FC = () => {
                   key={r.id}
                   id={`tab-${r.id}`}
                   onClick={() => {
-                    setSelectedRouteId(r.id);
+                    handleSelectRoute(r.id);
                     setShowAllRoutes(false);
                   }}
                   className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 cursor-pointer shadow-2xs ${
                     isSelected
-                      ? 'bg-[#0081C0] text-white shadow-sm shadow-[#0081C0]/30 ring-2 ring-[#0081C0]/40'
-                      : 'bg-white text-[#0B335E] hover:border-[#0081C0]/40 hover:text-[#0081C0] hover:bg-slate-50 border border-slate-200'
+                      ? 'text-white shadow-sm ring-2 ring-opacity-40'
+                      : 'bg-white hover:bg-slate-50 border border-slate-200'
                   }`}
+                  style={
+                    isSelected
+                      ? {
+                          backgroundColor: 'var(--section-accent)',
+                          borderColor: 'var(--section-accent)',
+                          color: '#FFFFFF',
+                        }
+                      : {
+                          color: 'var(--section-text-primary)',
+                        }
+                  }
                 >
                   {r.name.split(':')[0]}
                 </button>
@@ -189,7 +200,12 @@ export const RoutesModule: React.FC = () => {
             {!featuredTabs.some((r) => r.id === selectedRouteId) && (
               <button
                 id={`tab-${activeRoute.id}`}
-                className="px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-[#0081C0] text-white shadow-sm shadow-[#0081C0]/30 ring-2 ring-[#0081C0]/40 cursor-default"
+                className="px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white shadow-sm ring-2 ring-opacity-40 cursor-default"
+                style={{
+                  backgroundColor: 'var(--section-accent)',
+                  borderColor: 'var(--section-accent)',
+                  color: '#FFFFFF',
+                }}
               >
                 {activeRoute.name.split(':')[0]}
               </button>
@@ -199,7 +215,11 @@ export const RoutesModule: React.FC = () => {
             <button
               id="btn-mas-rutas"
               onClick={() => setShowAllRoutes((prev) => !prev)}
-              className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-[#0081C0] text-white border border-[#0081C0]/60 shadow-sm hover:bg-[#006699] transition-all duration-150 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white border shadow-sm transition-all duration-150 cursor-pointer hover:brightness-95"
+              style={{
+                backgroundColor: 'var(--section-accent)',
+                borderColor: 'var(--section-accent)',
+              }}
             >
               <span>Más Rutas (29)</span>
               <ChevronDown className={`w-3.5 h-3.5 text-white transition-transform duration-200 ${showAllRoutes ? 'rotate-180' : ''}`} />
@@ -210,7 +230,10 @@ export const RoutesModule: React.FC = () => {
           {showAllRoutes && (
             <div id="selector-todas-rutas" className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-3">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                <div className="text-xs font-bold text-[#0B335E] uppercase tracking-wider">
+                <div
+                  className="text-xs font-bold uppercase tracking-wider"
+                  style={{ color: 'var(--section-text-primary)' }}
+                >
                   Explora las 29 Rutas de Recolección de Puno
                 </div>
                 <button
@@ -227,14 +250,23 @@ export const RoutesModule: React.FC = () => {
                     <button
                       key={r.id}
                       onClick={() => {
-                        setSelectedRouteId(r.id);
+                        handleSelectRoute(r.id);
                         setShowAllRoutes(false);
                       }}
                       className={`text-left p-2.5 rounded-xl text-xs transition-all cursor-pointer border ${
                         isSelected
-                          ? 'bg-[#0081C0] text-white border-[#0081C0] shadow-2xs font-bold'
+                          ? 'text-white shadow-2xs font-bold'
                           : 'bg-slate-50 hover:bg-slate-100 text-[#0B335E] border-slate-100'
                       }`}
+                      style={
+                        isSelected
+                          ? {
+                              backgroundColor: 'var(--section-accent)',
+                              borderColor: 'var(--section-accent)',
+                              color: '#FFFFFF',
+                            }
+                          : undefined
+                      }
                     >
                       <div className="font-bold truncate">{r.name.split(':')[0]}</div>
                       <div className={`text-[10px] truncate ${isSelected ? 'text-white/80' : 'text-slate-500'}`}>{r.sector}</div>
@@ -246,11 +278,11 @@ export const RoutesModule: React.FC = () => {
           )}
         </div>
 
-        {/* 4. Main Grid: Left Leaflet Map + Right Information Card */}
+        {/* 3. Main Grid: Left Leaflet Map + Right Information Card */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
           
           {/* Left Column (lg:col-span-7): Interactive Leaflet Map with GPS Simulated Truck */}
-          <div className="lg:col-span-7 flex flex-col">
+          <div className="lg:col-span-7 flex flex-col relative">
             <RouteMap
               coordinates={activeRouteCoords || fallbackCoords}
               routeName={activeRoute.name}
@@ -263,95 +295,355 @@ export const RoutesModule: React.FC = () => {
               fallbackStart={activeRoute.startLatLng}
               fallbackEnd={activeRoute.endLatLng}
             />
+
+            {/* Barra unificada: Badge de ruta + Buscador integrados */}
+            <div className="absolute top-3 left-3 z-[500] flex flex-col max-w-[calc(100%-5rem)] sm:max-w-2xl">
+              <div className="flex items-center gap-0 bg-white rounded-full shadow-lg border border-slate-200/80 p-1.5 hover:shadow-xl transition-all w-full">
+                
+                {/* Sección 1: Identidad de la ruta (izquierda) */}
+                <div className="flex items-center gap-2 pl-2 pr-3 shrink-0">
+                  {/* Logo Muni */}
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 border border-slate-200 overflow-hidden">
+                    <img
+                      src="/images/escudo-puno.png"
+                      alt="Municipalidad Provincial de Puno"
+                      className="w-full h-full object-contain p-0.5"
+                    />
+                  </div>
+
+                  {/* Nombre de la ruta + GPS */}
+                  <div className="hidden sm:flex flex-col leading-tight">
+                    <span className="text-xs font-bold text-[#0B335E] whitespace-nowrap">
+                      {activeRoute.name.split(':')[0]}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                      <span className="text-[10px] font-semibold text-emerald-600 tracking-wide uppercase">
+                        GPS Oficial
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Separador vertical */}
+                <div className="hidden sm:block w-px h-7 bg-slate-200 shrink-0"></div>
+
+                {/* Sección 2: Input de búsqueda (derecha) */}
+                <input
+                  type="text"
+                  id="input-buscador-calles"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && searchResults.length > 0) {
+                      handleStreetSelect(searchResults[0]);
+                    }
+                  }}
+                  placeholder="Busca tu calle, jirón o barrio..."
+                  className="flex-1 min-w-0 text-sm text-slate-800 placeholder-slate-400 bg-transparent border-none outline-hidden py-2 px-3 font-medium"
+                />
+
+                {/* Lupa */}
+                <div className="text-slate-400 shrink-0 pl-1">
+                  <Search className="w-4 h-4" />
+                </div>
+
+                {/* Botón circular celeste */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (searchResults.length > 0) {
+                      handleStreetSelect(searchResults[0]);
+                    }
+                  }}
+                  className="w-9 h-9 rounded-full bg-[#0081C0] hover:bg-[#006699] text-white flex items-center justify-center shrink-0 shadow-md shadow-[#0081C0]/30 transition-all cursor-pointer ml-1"
+                  aria-label="Buscar ruta"
+                >
+                  <Navigation className="w-4 h-4 text-white" />
+                </button>
+              </div>
+
+              {/* Live Search Results Dropdown */}
+              {searchQuery.trim().length > 1 && (
+                <div className="mt-2 bg-white rounded-2xl shadow-xl border border-slate-200 max-h-64 overflow-y-auto p-2 space-y-1">
+                  <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 px-2 py-1">
+                    Rutas con coincidencias ({searchResults.length})
+                  </div>
+                  {searchResults.length > 0 ? (
+                    searchResults.map((r) => {
+                      const q = searchQuery.toLowerCase().trim();
+                      const matchingStreets = r.coverageStreets.filter((s) =>
+                        s.toLowerCase().includes(q)
+                      );
+                      return (
+                        <button
+                          key={r.id}
+                          onClick={() => handleStreetSelect(r)}
+                          className="w-full text-left p-2.5 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer group border border-transparent hover:border-slate-200"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 truncate">
+                              <MapPin className="w-4 h-4 text-[#0081C0] shrink-0" />
+                              <span className="font-bold text-xs text-[#0B335E] truncate group-hover:text-[#0081C0]">
+                                {r.name}
+                              </span>
+                            </div>
+                            <span className="text-[11px] font-bold text-[#15803D] bg-emerald-50 px-2 py-0.5 rounded-md shrink-0">
+                              Ver ruta
+                            </span>
+                          </div>
+                          {matchingStreets.length > 0 && (
+                            <div className="mt-1 text-[11px] text-slate-500 pl-6 truncate">
+                              Calles: <span className="text-slate-700 font-semibold">
+                                {matchingStreets.slice(0, 3).join(', ')}
+                                {matchingStreets.length > 3 ? '...' : ''}
+                              </span>
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <div className="p-3 text-center text-xs text-slate-500">
+                      No se encontraron calles con el término "{searchQuery}".
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Right Column (lg:col-span-5): Information Card */}
+          {/* Right Column (lg:col-span-5): Information Card Profile Style */}
           <div className="lg:col-span-5 flex flex-col">
-            <div className="w-full h-full bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
-              
-              <div className="space-y-5">
-                
-                {/* a. Badge del sector + Badge del turno */}
-                <div className="flex items-center flex-wrap gap-2">
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#0081C0]/15 text-[#0B335E] border border-[#0081C0]/30">
+            <div
+              className="w-full h-full rounded-2xl shadow-xl overflow-hidden relative flex flex-col"
+              style={{ background: 'linear-gradient(135deg, #0B335E 0%, #006699 50%, #0081C0 100%)' }}
+            >
+              {/* Patrón decorativo sutil */}
+              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FFFFFF_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none"></div>
+
+              <div className="relative z-10 p-5 sm:p-6 flex flex-col h-full">
+                {/* ===== Badges de sector y turno (arriba) ===== */}
+                <div className="flex items-center justify-center flex-wrap gap-2 mb-3">
+                  {/* Badge de sector con color dinámico */}
+                  <span 
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold backdrop-blur-xs border ${
+                      SECTOR_COLORS[activeRoute.sectorCode]?.bg || 'bg-white/15'
+                    } ${
+                      SECTOR_COLORS[activeRoute.sectorCode]?.text || 'text-white'
+                    } ${
+                      SECTOR_COLORS[activeRoute.sectorCode]?.border || 'border-white/25'
+                    }`}
+                  >
                     {activeRoute.sector}
                   </span>
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                  
+                  {/* Badge de turno con color según turno */}
+                  <span 
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold backdrop-blur-xs border ${
+                      SHIFT_COLORS[activeRoute.shift]?.bg || 'bg-white/15'
+                    } ${
+                      SHIFT_COLORS[activeRoute.shift]?.text || 'text-white'
+                    } ${
+                      SHIFT_COLORS[activeRoute.shift]?.border || 'border-white/25'
+                    }`}
+                  >
                     Turno {activeRoute.shift}
                   </span>
                 </div>
 
-                {/* b. Título de la ruta */}
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#0B335E] leading-snug">
-                    {activeRoute.name}
-                  </h3>
-                </div>
+                {/* ===== Header: Nombre de la ruta ===== */}
+                <h3 className="text-center text-base sm:text-lg font-extrabold text-white leading-snug mb-4 [text-shadow:_0_1px_4px_rgba(0,0,0,0.3)]">
+                  {activeRoute.name}
+                </h3>
 
-                {/* c. Horario de recogido & d. Frecuencia */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                  <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
-                      <Clock className="w-4 h-4 text-[#0081C0]" />
-                      <span>Horario de Recojo</span>
-                    </div>
-                    <div className="text-sm font-bold text-[#0B335E]">{activeRoute.schedule}</div>
-                  </div>
-
-                  <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
-                      <Calendar className="w-4 h-4 text-[#15803D]" />
-                      <span>Frecuencia</span>
-                    </div>
-                    <div className="text-sm font-bold text-slate-800">{activeRoute.frequency}</div>
-                  </div>
-                </div>
-
-                {/* e. Descripción del servicio (máximo 2 líneas) */}
-                <div className="space-y-1">
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                    Descripción del Servicio
-                  </h4>
-                  <p className="text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed">
-                    {activeRoute.description}
-                  </p>
-                </div>
-
-                {/* f. Calles comprendidas (Lista vertical con viñeta MapPin) */}
-                <div className="space-y-2 pt-1">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                      Calles Comprendidas ({activeRoute.coverageStreets.length})
-                    </h4>
-                  </div>
-                  
-                  <div className="max-h-44 overflow-y-auto space-y-1.5 pr-1 divide-y divide-slate-100 border border-slate-100 rounded-xl p-2.5 bg-slate-50/50">
-                    {activeRoute.coverageStreets.map((street, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center gap-2 pt-1.5 first:pt-0 text-xs font-medium text-[#1E293B]"
-                      >
-                        <MapPin className="w-3.5 h-3.5 text-[#0081C0] shrink-0" />
-                        <span className="truncate">{street}</span>
+                {/* ===== Doble círculo: Inicio → Fin ===== */}
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  {/* Círculo INICIO */}
+                  <div className="flex flex-col items-center gap-1.5">
+                    <div className="relative">
+                      <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-lg ring-3 ring-white/25 overflow-hidden border-2 border-white">
+                        {!startImgError ? (
+                          <img
+                            src={activeRoute.startImage || '/images/ruta1-inicio.webp'}
+                            alt={`Inicio ${activeRoute.name}`}
+                            className="w-full h-full object-cover"
+                            onError={() => setStartImgError(true)}
+                          />
+                        ) : (
+                          <Truck className="w-7 h-7 text-[#0B335E]" strokeWidth={1.5} />
+                        )}
                       </div>
-                    ))}
+                      {/* Punto verde (estado activo/inicio) */}
+                      <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white shadow-md"></span>
+                    </div>
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-white/80">
+                      Inicio
+                    </span>
+                  </div>
+
+                  {/* Conector visual (flecha) */}
+                  <div className="flex items-center justify-center text-white/50 pb-5">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </div>
+
+                  {/* Círculo FINAL */}
+                  <div className="flex flex-col items-center gap-1.5">
+                    <div className="relative">
+                      <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-lg ring-3 ring-white/25 overflow-hidden border-2 border-white">
+                        {!endImgError ? (
+                          <img
+                            src={activeRoute.endImage || '/images/ruta1-fin.webp'}
+                            alt={`Fin ${activeRoute.name}`}
+                            className="w-full h-full object-cover"
+                            onError={() => setEndImgError(true)}
+                          />
+                        ) : (
+                          <Truck className="w-7 h-7 text-[#0B335E]" strokeWidth={1.5} />
+                        )}
+                      </div>
+                      {/* Punto rojo (estado final) */}
+                      <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-red-500 border-2 border-white shadow-md"></span>
+                    </div>
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-white/80">
+                      Final
+                    </span>
                   </div>
                 </div>
 
-              </div>
+                {/* ===== Fila de 4 métricas (con íconos circulares blancos) ===== */}
+                <div className="grid grid-cols-4 gap-2 mb-4">
+                  {/* Horario - Celeste */}
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md">
+                      <Clock className="w-4 h-4" style={{ color: METRIC_COLORS.horario }} />
+                    </div>
+                    <span className="text-[9px] font-semibold text-white/90 text-center leading-tight">
+                      {activeRoute.schedule.split(' ')[0]}
+                    </span>
+                    <span className="text-[8px] text-white/60 text-center uppercase tracking-wide">Horario</span>
+                  </div>
 
-              {/* g. Botón "Ver Ficha Técnica Completa" */}
-              <div className="pt-4 border-t border-slate-100">
-                <button
-                  onClick={() => setModalRoute(activeRoute)}
-                  id="btn-ficha-tecnica-completa"
-                  className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-xs sm:text-sm bg-[#0081C0] hover:bg-[#006699] text-white transition-all shadow-sm shadow-[#0081C0]/30 hover:shadow cursor-pointer"
-                >
-                  <span>Ver Ficha Técnica Completa</span>
-                  <ExternalLink className="w-4 h-4 text-white" />
-                </button>
-              </div>
+                  {/* Frecuencia - Verde */}
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md">
+                      <Calendar className="w-4 h-4" style={{ color: METRIC_COLORS.frecuencia }} />
+                    </div>
+                    <span className="text-[9px] font-semibold text-white/90 text-center leading-tight">
+                      {activeRoute.frequency.split(',')[0].slice(0, 10)}
+                    </span>
+                    <span className="text-[8px] text-white/60 text-center uppercase tracking-wide">Frecuencia</span>
+                  </div>
 
+                  {/* Familias - Dorado */}
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md">
+                      <Shield className="w-4 h-4" style={{ color: METRIC_COLORS.familias }} />
+                    </div>
+                    <span className="text-[9px] font-semibold text-white/90 text-center leading-tight">
+                      ~{activeRoute.estimatedHouseholds}
+                    </span>
+                    <span className="text-[8px] text-white/60 text-center uppercase tracking-wide">Familias</span>
+                  </div>
+
+                  {/* Calles - Púrpura */}
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md">
+                      <MapPin className="w-4 h-4" style={{ color: METRIC_COLORS.calles }} />
+                    </div>
+                    <span className="text-[9px] font-semibold text-white/90 text-center leading-tight">
+                      {activeRoute.coverageStreets.length}
+                    </span>
+                    <span className="text-[8px] text-white/60 text-center uppercase tracking-wide">Calles</span>
+                  </div>
+                </div>
+
+                {/* ===== Contenido expandible con preview en estado colapsado ===== */}
+                <div className="overflow-hidden transition-all duration-500 mb-4">
+                  <div className="space-y-3 pt-1">
+                    {/* Descripción */}
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-white/50 block mb-1">
+                        Descripción del Servicio
+                      </span>
+                      <p
+                        className={`text-xs text-white/90 leading-relaxed transition-all duration-300 ${
+                          isCardExpanded ? '' : 'line-clamp-2'
+                        }`}
+                      >
+                        {activeRoute.description}
+                      </p>
+                    </div>
+
+                    {/* Listado de calles */}
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-white/50 block mb-1.5">
+                        Calles Comprendidas ({activeRoute.coverageStreets.length})
+                      </span>
+                      <div
+                        className={`space-y-1 pr-1 transition-all duration-300 ${
+                          isCardExpanded ? 'max-h-40 overflow-y-auto' : ''
+                        }`}
+                      >
+                        {(isCardExpanded
+                          ? activeRoute.coverageStreets
+                          : activeRoute.coverageStreets.slice(0, 3)
+                        ).map((street, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-[11px] text-white/85 py-0.5">
+                            <span className="w-1 h-1 rounded-full bg-[#E5A91E] shrink-0"></span>
+                            <span className="truncate">{street}</span>
+                          </div>
+                        ))}
+                        {/* Indicador de "más calles" cuando está colapsada */}
+                        {!isCardExpanded && activeRoute.coverageStreets.length > 3 && (
+                          <div className="text-[10px] text-white/50 italic pt-0.5 pl-3">
+                            +{activeRoute.coverageStreets.length - 3} calles más...
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ===== Botones de acción (al pie) ===== */}
+                <div className="mt-auto pt-3 space-y-2">
+                  {/* Botón principal: Ver más / Ver menos */}
+                  <button
+                    onClick={() => setIsCardExpanded((prev) => !prev)}
+                    className="w-full py-3 px-4 rounded-lg font-bold text-xs sm:text-sm bg-[#0B335E] hover:bg-[#071F38] text-white transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
+                  >
+                    <span>{isCardExpanded ? 'Ver menos' : 'Ver más'}</span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform duration-300 ${
+                        isCardExpanded ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {/* Botón secundario: Ver Ficha Técnica Completa */}
+                  <button
+                    onClick={() => setModalRoute(activeRoute)}
+                    id="btn-ficha-tecnica-completa"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-bold text-xs bg-white/15 hover:bg-white/25 text-white border border-white/25 backdrop-blur-xs transition-all cursor-pointer"
+                  >
+                    <span>Ver Ficha Técnica Completa</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-white" />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 

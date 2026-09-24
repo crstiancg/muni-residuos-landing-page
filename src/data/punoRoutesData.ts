@@ -19,7 +19,7 @@ const RAW_PUNO_ROUTES: RouteDetail[] = [
     sectorCode: 1,
     schedule: '05:00 AM - 08:30 AM',
     shift: 'Mañana',
-    frequency: 'Lunes a Sábado',
+    frequency: 'L - S',
     truckUnit: 'Compactador C-04 (Volvo 15m³)',
     estimatedHouseholds: 1420,
     color: '#0B335E',
@@ -36,6 +36,8 @@ const RAW_PUNO_ROUTES: RouteDetail[] = [
       'Parque Pino'
     ],
     mainPoints: ['Plaza Mayor', 'Catedral de Puno', 'Parque Pino', 'Mercado Central', 'Teatro Municipal'],
+    startImage: '/routes/ruta1-inicio.webp',  
+    endImage: '/routes/ruta1-fin.webp', 
   },
   {
     id: 'ruta-02',
@@ -61,6 +63,8 @@ const RAW_PUNO_ROUTES: RouteDetail[] = [
       'Alrededores Arco Deustua'
     ],
     mainPoints: ['Monumento Arco Deustua', 'Plazoleta Laykakota', 'Colegio Santa Rosa', 'Cuesta del Carmen'],
+    startImage: '/images/ruta2-inicio.webp',  
+    endImage: '/images/ruta2-fin.webp',    
   },
   {
     id: 'ruta-03',
@@ -86,6 +90,8 @@ const RAW_PUNO_ROUTES: RouteDetail[] = [
       'Jr. Pardo'
     ],
     mainPoints: ['Puerto de Puno', 'Embarcadero Turístico', 'Mercado Unión y Dignidad', 'Estación Ferroviaria'],
+    startImage: '/images/ruta3-inicio.webp',  
+    endImage: '/images/ruta3-fin.webp',    
   },
   {
     id: 'ruta-04',
@@ -110,6 +116,8 @@ const RAW_PUNO_ROUTES: RouteDetail[] = [
       'Pasaje Chucuito'
     ],
     mainPoints: ['Mirador Cerrito Huajsapata', 'Templo San Antonio', 'Capilla de la Candelaria', 'Mirador Manco Cápac'],
+    startImage: '/images/ruta4-inicio.webp',  
+    endImage: '/images/ruta4-fin.webp',    
   },
   {
     id: 'ruta-05',
@@ -133,6 +141,8 @@ const RAW_PUNO_ROUTES: RouteDetail[] = [
       'Malecón de la Bahía'
     ],
     mainPoints: ['Bahía de Puno', 'Club Náutico', 'Restaurantes Típicos', 'Parque de la Locomotora'],
+    startImage: '/images/ruta5-inicio.webp',  
+    endImage: '/images/ruta5-fin.webp',    
   },
   {
     id: 'ruta-06',
@@ -156,6 +166,8 @@ const RAW_PUNO_ROUTES: RouteDetail[] = [
       'Alrededores Mercado Bellavista'
     ],
     mainPoints: ['Mercado Bellavista', 'Complejo Polideportivo', 'Terminal Zonal', 'Feria de Productores'],
+    startImage: '/images/ruta6-inicio.webp',  
+    endImage: '/images/ruta6-fin.webp',    
   },
   {
     id: 'ruta-07',
@@ -179,6 +191,8 @@ const RAW_PUNO_ROUTES: RouteDetail[] = [
       'Pasaje Bolognesi'
     ],
     mainPoints: ['Centro de Salud Victoria', 'I.E. María Auxiliadora', 'Plazoleta San José'],
+    startImage: '/images/ruta7-inicio.webp',  
+    endImage: '/images/ruta7-fin.webp',    
   },
   {
     id: 'ruta-08',
@@ -202,6 +216,8 @@ const RAW_PUNO_ROUTES: RouteDetail[] = [
       'Pasaje Santa Rosa'
     ],
     mainPoints: ['Templo Santa Rosa', 'Plaza Bolognesi', 'Poder Judicial (Sede Central)'],
+    startImage: '/images/ruta8-inicio.webp',  
+    endImage: '/images/ruta8-fin.webp',    
   },
 
   // SECTOR 2: ZONA NORTE Y BELLAVISTA (Rutas 09 a 15)
@@ -700,6 +716,9 @@ export const PUNO_ROUTES: RouteDetail[] = RAW_PUNO_ROUTES.map((route) => {
     startLatLng: coords?.start || [-15.8402, -70.0219],
     endLatLng: coords?.end || [-15.8368, -70.0245],
     geojsonFile: coords?.geojsonFile ?? null,
+    // Rutas de imágenes por defecto (el admin las reemplazará por ruta específica en el futuro)
+    startImage: route.startImage || '/images/ruta1-inicio.webp',
+    endImage: route.endImage || '/images/ruta1-fin.webp',
   };
 });
 

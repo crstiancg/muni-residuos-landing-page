@@ -55,7 +55,19 @@ export default function App() {
         onScrollToApp={() => scrollToSection('descargar-app')}
       />
 
-      <main className="flex-1">
+      {/* Franja de transición alargada e inmersiva (Opción C: Hero #0B335E → Rutas #FFFFFF) */}
+      <div 
+        aria-hidden="true" 
+        className="w-full h-32 sm:h-40 lg:h-48 relative overflow-hidden pointer-events-none -mt-px"
+        style={{
+          background: 'linear-gradient(180deg, #0B335E 0%, #16467E 22%, #1E5BA8 45%, #93C5FD 70%, #DBEAFE 85%, #FFFFFF 100%)',
+        }}
+      >
+        {/* Resplandor sutil difuminado que extiende el glow del Hero */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-24 bg-[#0081C0] rounded-[100%] blur-[50px] opacity-25 pointer-events-none" />
+      </div>
+
+      <main className="flex-1 bg-white">
         {/* 4. Módulo 1: Las 29 Rutas Oficiales */}
         <RoutesModule />
 

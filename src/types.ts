@@ -20,6 +20,8 @@ export interface RouteDetail {
   startLatLng?: [number, number];
   endLatLng?: [number, number];
   geojsonFile?: string | null;
+  startImage?: string;
+  endImage?: string;
 }
 
 export interface WasteItem {

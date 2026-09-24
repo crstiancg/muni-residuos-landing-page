@@ -241,7 +241,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section 
       id="hero-section"
-      className="relative w-full min-h-screen bg-slate-900 text-white overflow-hidden select-none flex flex-col justify-between m-0 p-0"
+      className="relative w-full min-h-[700px] sm:min-h-[760px] lg:min-h-[820px] bg-[#0B335E] text-white overflow-hidden select-none flex flex-col justify-between m-0 p-0"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -272,7 +272,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
             {/* Carefully calibrated multi-layer gradient overlay (protección de texto en degradé a transparente) */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#0B335E]/95 via-[#0B335E]/70 via-60% to-transparent sm:from-[#0B335E]/90 sm:via-[#0B335E]/50 sm:via-40%"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B335E]/60 via-transparent to-black/20"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B335E] via-[#0B335E]/40 to-black/20"></div>
 
             {/* Architectural Grid Micro-pattern overlay */}
             <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
@@ -281,7 +281,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       })}
 
       {/* Main Content Area */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center pt-24 sm:pt-28 lg:pt-32 pb-24 sm:pb-28 lg:pb-32">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center pt-24 sm:pt-28 lg:pt-32 pb-40 sm:pb-48 lg:pb-56">
         
         <div className="max-w-3xl space-y-6 sm:space-y-7">
           
@@ -333,10 +333,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="pt-6 border-t border-white/20 grid grid-cols-3 gap-4 max-w-xl">
             {activeSlide.stats.map((stat, i) => (
               <div key={i} className="space-y-0.5">
-                <div className="text-lg sm:text-2xl font-extrabold text-white">
+                <div className="text-lg sm:text-2xl font-extrabold text-white [text-shadow:_0_1px_4px_rgba(0,0,0,0.4)]">
                   {stat.value}
                 </div>
-                <div className="text-xs text-slate-200 font-medium">
+                <div className="text-xs text-slate-200 font-medium [text-shadow:_0_1px_3px_rgba(0,0,0,0.5)]">
                   {stat.label}
                 </div>
               </div>
@@ -383,8 +383,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   id={`hero-dot-${index}`}
                   className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
                     isActive
-                      ? 'w-8 bg-[#0081C0] shadow-sm'
-                      : 'w-2.5 bg-[#0081C0]/40 hover:bg-[#0081C0]/70'
+                      ? 'w-8 bg-[#0081C0] shadow-md ring-2 ring-white/30'
+                      : 'w-2.5 bg-white/40 hover:bg-white/70 ring-1 ring-white/20'
                   }`}
                   aria-label={`Ir a slide ${index + 1}: ${slide.title}`}
                   aria-current={isActive ? 'true' : 'false'}
@@ -404,7 +404,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
 
           {/* Quick topic pills on larger screens */}
-          <div className="hidden md:flex items-center gap-2 bg-black/30 backdrop-blur-md p-1.5 rounded-full border border-white/15">
+          <div className="hidden md:flex items-center gap-2 bg-black/50 backdrop-blur-xl p-1.5 rounded-full border border-white/25 shadow-lg shadow-black/20">
             {HERO_SLIDES.map((slide, index) => {
               const isActive = index === currentSlide;
               return (
@@ -413,8 +413,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   onClick={() => goToSlide(index)}
                   className={`px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-[#0081C0] text-white shadow-xs'
-                      : 'text-[#3399D1] border border-[#0081C0]/30 hover:bg-[#0081C0]/20 hover:text-white'
+                      ? 'bg-[#0081C0] text-white shadow-md'
+                      : 'text-white/90 hover:text-white hover:bg-white/15 border border-white/20'
                   }`}
                 >
                   {slide.badge}
@@ -425,6 +425,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
         </div>
       </div>
+
+      {/* Resplandor redondeado difuminado (Glow institucional - Opción C) en la base del Hero */}
+      <div 
+        aria-hidden="true"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-16 sm:h-24 bg-[#0081C0] rounded-[100%] blur-[60px] opacity-40 pointer-events-none z-20"
+      />
 
     </section>
   );

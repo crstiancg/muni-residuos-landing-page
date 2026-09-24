@@ -20,6 +20,14 @@
     --color-sky-dark: #006699;
     --color-sky-light: #3399D1;
     --color-navy: #0B335E;
+
+    /* Section Theme Fallbacks */
+    --section-accent: #0081C0;
+    --section-accent-dark: #006699;
+    --section-accent-soft: #E6F2FA;
+    --section-bg: #FFFFFF;
+    --section-text-primary: #0B335E;
+    --section-text-secondary: #64748B;
   }
 
   body {
@@ -87,5 +95,12 @@
   width: 42px;
   height: 42px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
