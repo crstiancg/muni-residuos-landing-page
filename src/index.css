@@ -2,6 +2,9 @@
 @import "leaflet/dist/leaflet.css";
 
 @theme {
+  --font-heading: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --color-puno-blue: #0081C0;
   --color-puno-navy: #0B335E;
   --color-puno-sky: #0081C0;
@@ -14,7 +17,9 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-heading: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-sans: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --color-accent-sky: #0081C0;
     --color-sky-primary: #0081C0;
     --color-sky-dark: #006699;
@@ -31,11 +36,11 @@
   }
 
   body {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
   }
 
   h1, h2, h3, h4, h5, h6, .font-display {
-    font-family: var(--font-sans);
+    font-family: var(--font-heading);
   }
 
   section[id] {
@@ -103,4 +108,73 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ============================================ */
+/* CLASES CUSTOM PARA MÓDULOS DE ACTUALIDAD    */
+/* ============================================ */
+
+/* Tipografías */
+.font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+.font-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+/* Animaciones de scroll reveal */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: scrollReveal 0.7s ease-out forwards;
+}
+
+.scroll-reveal-scale {
+  opacity: 0;
+  transform: scale(0.96);
+  animation: scrollRevealScale 0.7s ease-out forwards;
+}
+
+.scroll-reveal-slide-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: scrollRevealSlide 0.7s ease-out forwards;
+}
+
+.scroll-reveal-slide-right {
+  opacity: 0;
+  transform: translateX(30px);
+  animation: scrollRevealSlide 0.7s ease-out forwards;
+}
+
+@keyframes scrollReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scrollRevealScale {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scrollRevealSlide {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Stagger delays para grids animados */
+.animate-stagger-1 { animation-delay: 0.05s; }
+.animate-stagger-2 { animation-delay: 0.15s; }
+.animate-stagger-3 { animation-delay: 0.25s; }
+.animate-stagger-4 { animation-delay: 0.35s; }
+.animate-stagger-5 { animation-delay: 0.45s; }
+.animate-stagger-6 { animation-delay: 0.55s; }
 

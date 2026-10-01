@@ -82,3 +82,29 @@ export interface FaqItem {
   answer: string;
   category: string;
 }
+
+export type MunicipalNewsCategory = 'Intervención' | 'Campaña' | 'Logro' | 'Anuncio Oficial' | 'General';
+
+export interface MunicipalNewsItem {
+  id: string;
+  title: string;
+  excerpt: string;
+  fullContent: string[];
+  category: MunicipalNewsCategory;
+  date: string;
+  readTime: string;
+  author: string;
+  image: string;
+  tags: string[];
+}
+
+export type NavigationSection = 
+  | 'inicio' 
+  | 'rutas' 
+  | 'segregacion' 
+  | 'compostaje' 
+  | 'sumac-ayni' 
+  | 'galeria-impacto' 
+  | 'noticias' 
+  | 'reporta' 
+  | 'faq';

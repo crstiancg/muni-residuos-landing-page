@@ -2,26 +2,55 @@ import { WasteItem } from '../types';
 
 export const WASTE_CATEGORIES_INFO = [
   {
-    id: 'organicos',
-    title: 'Residuos Orgánicos',
+    id: 'aprovechables',
+    title: 'Residuos Aprovechables',
     subtitle: 'Tacho / Bolsa Verde',
-    daysBadge: 'LUN - MIÉ - VIE',
-    colorName: 'Verde / Marrón',
+    daysBadge: 'MAR - JUE - SÁB',
+    colorName: 'Verde',
     colorHex: '#15803D',
     bgLight: '#F0FDF4',
-    borderClass: 'border-emerald-200',
-    iconBg: 'bg-emerald-100 text-emerald-800',
+    borderClass: 'border-[#15803D]/30',
+    iconBg: 'bg-[#15803D]/10 text-[#15803D]',
+    description: 'Materiales listos para su reutilización.',
+    itemsType: 'accepted' as const,
+    items: [
+      'Botellas PET aplastadas',
+      'Cartón, cajas y periódicos',
+      'Latas y metales',
+      'Envases de vidrio'
+    ],
+    acceptedItems: [
+      'Botellas PET aplastadas',
+      'Cartón, cajas y periódicos',
+      'Latas y metales',
+      'Envases de vidrio'
+    ],
+    prohibitedItems: [],
+    collectionDays: 'MAR - JUE - SÁB',
+    destination: 'Destino: Recicladores Formalizados',
+    tag: 'MAR - JUE - SÁB'
+  },
+  {
+    id: 'organicos',
+    title: 'Residuos Orgánicos',
+    subtitle: 'Tacho / Bolsa Marrón',
+    daysBadge: 'LUN - MIÉ - VIE',
+    colorName: 'Marrón / Café',
+    colorHex: '#78350F',
+    bgLight: '#FEF3C7',
+    borderClass: 'border-[#78350F]/30',
+    iconBg: 'bg-[#78350F]/10 text-[#78350F]',
     description: 'Residuos que se transforman en abono natural.',
     itemsType: 'accepted' as const,
     items: [
       'Cáscaras de frutas y verduras',
-      'Restos de comida cocida y café',
+      'Restos de comida y café',
       'Cáscaras de huevo y té',
       'Hojas secas y restos de jardín'
     ],
     acceptedItems: [
       'Cáscaras de frutas y verduras',
-      'Restos de comida cocida y café',
+      'Restos de comida y café',
       'Cáscaras de huevo y té',
       'Hojas secas y restos de jardín'
     ],
@@ -31,62 +60,62 @@ export const WASTE_CATEGORIES_INFO = [
     tag: 'LUN - MIÉ - VIE'
   },
   {
-    id: 'inorganicos',
-    title: 'Inorgánicos Reciclables',
-    subtitle: 'Bolsa / Tacho Azul o Blanco',
-    daysBadge: 'MAR - JUE - SÁB',
-    colorName: 'Celeste Institucional / Azul',
-    colorHex: '#0081C0',
-    bgLight: '#F0F9FF',
-    borderClass: 'border-[#0081C0]/30',
-    iconBg: 'bg-[#0081C0]/10 text-[#0B335E]',
-    description: 'Materiales listos para su reutilización.',
-    itemsType: 'accepted' as const,
-    items: [
-      'Botellas de plástico (PET) aplastadas',
-      'Cartón, cajas y periódicos secos',
-      'Latas de leche, atún y metales',
-      'Envases de vidrio intactos'
-    ],
-    acceptedItems: [
-      'Botellas de plástico (PET) aplastadas',
-      'Cartón, cajas y periódicos secos',
-      'Latas de leche, atún y metales',
-      'Envases de vidrio intactos'
-    ],
-    prohibitedItems: [],
-    collectionDays: 'MAR - JUE - SÁB',
-    destination: 'Destino: Recicladores Formalizados',
-    tag: 'MAR - JUE - SÁB'
-  },
-  {
     id: 'no_aprovechables',
-    title: 'No Aprovechables',
-    subtitle: 'Bolsa Negra / Tacho Gris',
+    title: 'Residuos No Aprovechables',
+    subtitle: 'Tacho / Bolsa Negra',
     daysBadge: 'DIARIO / TURNO NOCHE',
-    colorName: 'Gris / Negro',
-    colorHex: '#475569',
-    bgLight: '#F8FAFC',
-    borderClass: 'border-slate-300',
-    iconBg: 'bg-slate-200 text-slate-800',
-    description: 'Residuos no útiles.',
+    colorName: 'Negro',
+    colorHex: '#0F172A',
+    bgLight: '#F1F5F9',
+    borderClass: 'border-[#0F172A]/30',
+    iconBg: 'bg-[#0F172A]/10 text-[#0F172A]',
+    description: 'Residuos sanitarios y no reutilizables.',
     itemsType: 'prohibited' as const,
     items: [
-      'Papel higiénico y pañales usados',
+      'Papel higiénico y pañales',
       'Colillas de cigarro y tecnopor',
-      'Mascarillas y guantes desechables',
-      'Pilas y focos (Puntos RAEE)'
+      'Mascarillas y guantes usados',
+      'Envolturas metalizadas'
     ],
     acceptedItems: [],
     prohibitedItems: [
-      'Papel higiénico y pañales usados',
+      'Papel higiénico y pañales',
       'Colillas de cigarro y tecnopor',
-      'Mascarillas y guantes desechables',
-      'Pilas y focos (Puntos RAEE)'
+      'Mascarillas y guantes usados',
+      'Envolturas metalizadas'
     ],
     collectionDays: 'DIARIO / TURNO NOCHE',
     destination: 'Destino: Relleno Sanitario Itapalluni',
     tag: 'DIARIO / TURNO NOCHE'
+  },
+  {
+    id: 'peligrosos',
+    title: 'Residuos Peligrosos',
+    subtitle: 'Tacho / Bolsa Roja',
+    daysBadge: 'PUNTOS RAEE',
+    colorName: 'Rojo',
+    colorHex: '#DC2626',
+    bgLight: '#FEF2F2',
+    borderClass: 'border-[#DC2626]/30',
+    iconBg: 'bg-[#DC2626]/10 text-[#DC2626]',
+    description: 'Residuos peligrosos que requieren tratamiento especial.',
+    itemsType: 'prohibited' as const,
+    items: [
+      'Pilas y baterías usadas',
+      'Focos ahorradores y fluorescentes',
+      'Envases de aerosoles',
+      'Medicamentos vencidos'
+    ],
+    acceptedItems: [],
+    prohibitedItems: [
+      'Pilas y baterías usadas',
+      'Focos ahorradores y fluorescentes',
+      'Envases de aerosoles',
+      'Medicamentos vencidos'
+    ],
+    collectionDays: 'Puntos de acopio RAEE',
+    destination: 'Destino: Puntos de Acopio Municipal',
+    tag: 'PUNTOS RAEE'
   }
 ];
 

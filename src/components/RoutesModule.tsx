@@ -121,10 +121,10 @@ export const RoutesModule: React.FC = () => {
   return (
     <section
       id="rutas"
-      className="pt-8 pb-14 sm:pt-10 sm:pb-18 lg:pt-12 lg:pb-20 relative overflow-hidden transition-colors duration-500 bg-white"
+      className="w-full pt-8 pb-14 sm:pt-10 sm:pb-18 lg:pt-12 lg:pb-20 relative overflow-hidden bg-white"
       style={{
         ...getThemeStyles('rutas'),
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#e5f2f8',
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 sm:space-y-6 relative z-10">

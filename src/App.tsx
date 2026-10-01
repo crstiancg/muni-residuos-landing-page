@@ -6,33 +6,37 @@ import { SegregationModule } from './components/SegregationModule';
 import { CitizenReportModule } from './components/CitizenReportModule';
 import { SumacAyniModule } from './components/SumacAyniModule';
 import { CompostModule } from './components/CompostModule';
-import { AppDownloadSection } from './components/AppDownloadSection';
+import { ActualidadSection } from './components/ActualidadSection';
 import { FaqSection } from './components/FaqSection';
 import { Footer } from './components/Footer';
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState<string>('rutas');
+  const [activeSection, setActiveSection] = useState<string>('');
 
   // Track scroll position to highlight active navigation link
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['rutas', 'segregacion', 'reporta', 'sumac-ayni', 'compostaje', 'descargar-app', 'faq'];
+      const sections = ['rutas', 'segregacion', 'compostaje', 'sumac-ayni', 'actualidad', 'reporta', 'faq'];
       const scrollPosition = window.scrollY + 200;
 
+      let foundSection = '';
       for (const sectionId of sections) {
         const element = document.getElementById(sectionId);
         if (element) {
           const top = element.offsetTop;
           const height = element.offsetHeight;
           if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(sectionId);
+            foundSection = sectionId;
             break;
           }
         }
       }
+      
+      setActiveSection(foundSection);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Ejecutar una vez al montar
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -55,38 +59,26 @@ export default function App() {
         onScrollToApp={() => scrollToSection('descargar-app')}
       />
 
-      {/* Franja de transición alargada e inmersiva (Opción C: Hero #0B335E → Rutas #FFFFFF) */}
-      <div 
-        aria-hidden="true" 
-        className="w-full h-32 sm:h-40 lg:h-48 relative overflow-hidden pointer-events-none -mt-px"
-        style={{
-          background: 'linear-gradient(180deg, #0B335E 0%, #16467E 22%, #1E5BA8 45%, #93C5FD 70%, #DBEAFE 85%, #FFFFFF 100%)',
-        }}
-      >
-        {/* Resplandor sutil difuminado que extiende el glow del Hero */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-24 bg-[#0081C0] rounded-[100%] blur-[50px] opacity-25 pointer-events-none" />
-      </div>
-
-      <main className="flex-1 bg-white">
-        {/* 4. Módulo 1: Las 29 Rutas Oficiales */}
+      <main className="flex-1 bg-transparent">
+        {/* 1. Rutas */}
         <RoutesModule />
 
-        {/* 5. Módulo 2: Segregación en la Fuente */}
+        {/* 2. Segregación */}
         <SegregationModule />
 
-        {/* 6. Módulo 3+4: Reporta a tu Vecino & Puntos Críticos */}
-        <CitizenReportModule />
-
-        {/* 7. Módulo 5: Sumac Ayni (Campañas Ambientales) */}
-        <SumacAyniModule />
-
-        {/* 8. Módulo 6: Compostaje Domiciliario */}
+        {/* 3. Compostaje */}
         <CompostModule />
 
-        {/* 9. App Download & QR Section */}
-        <AppDownloadSection />
+        {/* 4. Sumac Ayni */}
+        <SumacAyniModule />
 
-        {/* 10. Preguntas Frecuentes (FAQ) */}
+        {/* 5. Actualidad: Noticias + Galería de Impacto */}
+        <ActualidadSection />
+
+        {/* 7. Reporta a tu Vecino */}
+        <CitizenReportModule />
+
+        {/* 8. FAQ */}
         <FaqSection />
       </main>
 

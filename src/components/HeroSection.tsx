@@ -51,8 +51,6 @@ const HERO_SLIDES: SlideItem[] = [
     subtitle: 'Sigue el recorrido de los camiones compactadores en tiempo real desde tu celular y recibe avisos de campana en tu cuadra.',
     ctaText: 'Ver las 29 Rutas',
     targetSection: 'rutas',
-    secondaryCtaText: 'Descargar App',
-    secondaryTargetSection: 'descargar-app',
     image: '/images/29-rutas.jpg',
     imageAlt: 'Monitoreo satelital y flota de recolección en Puno',
     accentColor: '#0081C0',
@@ -81,27 +79,6 @@ const HERO_SLIDES: SlideItem[] = [
       { label: 'Tachos Oficiales', value: '4 Colores' },
       { label: 'Separa en Casa', value: '100%' },
       { label: 'Impacto Directo', value: 'Reciclaje' }
-    ]
-  },
-  {
-    id: 'slide-reportes',
-    badge: 'Fiscalización Ciudadana',
-    badgeIcon: AlertTriangle,
-    badgeColor: 'bg-amber-500/30 text-amber-100 border-amber-300/30',
-    title: 'Reporta a tu Vecino',
-    highlightText: '',
-    subtitle: 'Denuncia botaderos clandestinos y malas prácticas de disposición de residuos en tu barrio con fotografía georreferenciada.',
-    ctaText: 'Reportar Ahora',
-    targetSection: 'reporta',
-    secondaryCtaText: 'Conocer Sanciones',
-    secondaryTargetSection: 'reporta',
-    image: '/images/reporte-al-vecino.jpg',
-    imageAlt: 'Fiscalización ambiental y calles limpias en Puno',
-    accentColor: '#E5A91E',
-    stats: [
-      { label: 'Respuesta Máx.', value: '24 hrs' },
-      { label: 'Geolocalización', value: 'GPS Exacto' },
-      { label: 'Seguimiento', value: 'Con Ticket' }
     ]
   },
   {
@@ -137,13 +114,34 @@ const HERO_SLIDES: SlideItem[] = [
     targetSection: 'sumac-ayni',
     secondaryCtaText: 'Segregación en Fuente',
     secondaryTargetSection: 'segregacion',
-    image: '/images/sumac-ayni.jpg',
+    image: '/images/sumac-ayni.webp',
     imageAlt: 'Campañas de limpieza y voluntariado ambiental en Puno',
     accentColor: '#0B335E',
     stats: [
       { label: 'Jornadas 2026', value: 'Mensuales' },
       { label: 'Ecotrueques', value: 'Plantas x Botellas' },
       { label: 'Voluntarios', value: '+1,200 Puneños' }
+    ]
+  },
+  {
+    id: 'slide-reportes',
+    badge: 'Fiscalización Ciudadana',
+    badgeIcon: AlertTriangle,
+    badgeColor: 'bg-amber-500/30 text-amber-100 border-amber-300/30',
+    title: 'Reporta a tu Vecino',
+    highlightText: '',
+    subtitle: 'Denuncia botaderos clandestinos y malas prácticas de disposición de residuos en tu barrio con fotografía georreferenciada.',
+    ctaText: 'Reportar Ahora',
+    targetSection: 'reporta',
+    secondaryCtaText: 'Conocer Sanciones',
+    secondaryTargetSection: 'reporta',
+    image: '/images/reporte-al-vecino.jpg',
+    imageAlt: 'Fiscalización ambiental y calles limpias en Puno',
+    accentColor: '#E5A91E',
+    stats: [
+      { label: 'Respuesta Máx.', value: '24 hrs' },
+      { label: 'Geolocalización', value: 'GPS Exacto' },
+      { label: 'Seguimiento', value: 'Con Ticket' }
     ]
   }
 ];
@@ -241,7 +239,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section 
       id="hero-section"
-      className="relative w-full min-h-[700px] sm:min-h-[760px] lg:min-h-[820px] bg-[#0B335E] text-white overflow-hidden select-none flex flex-col justify-between m-0 p-0"
+      className="relative w-full min-h-[800px] sm:min-h-[860px] lg:min-h-[920px] bg-[#0B335E] text-white overflow-hidden select-none flex flex-col justify-between m-0 p-0"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -264,26 +262,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               src={slide.image}
               alt={slide.imageAlt}
               referrerPolicy="no-referrer"
-              className={`w-full h-full object-cover object-[center_60%] transform transition-transform duration-10000 ease-out ${
-                isActive ? 'scale-105' : 'scale-100'
-              }`}
+              className="w-full h-full object-cover object-[center_60%]"
               loading={index === 0 ? 'eager' : 'lazy'}
             />
-
-            {/* Carefully calibrated multi-layer gradient overlay (protección de texto en degradé a transparente) */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0B335E]/95 via-[#0B335E]/70 via-60% to-transparent sm:from-[#0B335E]/90 sm:via-[#0B335E]/50 sm:via-40%"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B335E] via-[#0B335E]/40 to-black/20"></div>
-
-            {/* Architectural Grid Micro-pattern overlay */}
-            <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
           </div>
         );
       })}
 
       {/* Main Content Area */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center pt-24 sm:pt-28 lg:pt-32 pb-40 sm:pb-48 lg:pb-56">
+      <div className="relative z-20 w-full px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-20 flex-1 flex flex-col justify-center pt-24 sm:pt-28 lg:pt-32 pb-32 sm:pb-36 lg:pb-40">
         
-        <div className="max-w-3xl space-y-6 sm:space-y-7">
+        <div className="max-w-2xl space-y-4 sm:space-y-5">
           
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/15 text-white border border-white/25 backdrop-blur-md shadow-xs animate-fadeIn">
@@ -294,21 +283,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
           {/* Main Headings (Sans-serif, font-extrabold) */}
           <div className="space-y-1 sm:space-y-2">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15] [text-shadow:_0_2px_8px_rgba(0,0,0,0.5)]">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.05] uppercase [text-shadow:_0_2px_12px_rgba(0,0,0,0.65)]">
               {activeSlide.title}{' '}
-              <span className="text-white block sm:inline">
+              <span className="text-white block">
                 {activeSlide.highlightText}
               </span>
             </h1>
           </div>
 
           {/* Subtitle / Description */}
-          <p className="text-base sm:text-lg lg:text-xl text-slate-100 leading-relaxed font-normal max-w-2xl [text-shadow:_0_1px_4px_rgba(0,0,0,0.6)]">
+          <p className="text-sm sm:text-base lg:text-lg text-white/95 leading-relaxed font-normal [text-shadow:_0_1px_6px_rgba(0,0,0,0.7)]">
             {activeSlide.subtitle}
           </p>
 
           {/* Call to Actions */}
-          <div className="flex flex-wrap items-center gap-3.5 pt-2">
+          <div className="flex flex-wrap items-center gap-3 pt-1">
             <button
               onClick={() => handleScrollTo(activeSlide.targetSection)}
               id={`hero-cta-primary-${activeSlide.id}`}
@@ -327,20 +316,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <span>{activeSlide.secondaryCtaText}</span>
               </button>
             )}
-          </div>
-
-          {/* Key Metrics / Highlights for Active Slide */}
-          <div className="pt-6 border-t border-white/20 grid grid-cols-3 gap-4 max-w-xl">
-            {activeSlide.stats.map((stat, i) => (
-              <div key={i} className="space-y-0.5">
-                <div className="text-lg sm:text-2xl font-extrabold text-white [text-shadow:_0_1px_4px_rgba(0,0,0,0.4)]">
-                  {stat.value}
-                </div>
-                <div className="text-xs text-slate-200 font-medium [text-shadow:_0_1px_3px_rgba(0,0,0,0.5)]">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
           </div>
 
         </div>
@@ -369,10 +344,30 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/* Bottom Bar: Indicators & Slide Jump Pills */}
-      <div className="absolute bottom-6 sm:bottom-8 left-0 right-0 z-30 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="absolute bottom-16 sm:bottom-20 lg:bottom-24 left-0 right-0 z-30">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-20 flex flex-col items-start gap-3">
           
-          {/* Dot Indicators */}
+          {/* Quick topic pills on larger screens (ARRIBA) */}
+          <div className="hidden md:flex items-center gap-1 bg-black/50 backdrop-blur-xl p-1 rounded-full border border-white/25 shadow-lg shadow-black/20">
+            {HERO_SLIDES.map((slide, index) => {
+              const isActive = index === currentSlide;
+              return (
+                <button
+                  key={slide.id}
+                  onClick={() => goToSlide(index)}
+                  className={`px-2.5 py-1 rounded-full text-[10px] font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                    isActive
+                      ? 'bg-[#0081C0] text-white shadow-md'
+                      : 'text-white/90 hover:text-white hover:bg-white/15 border border-white/20'
+                  }`}
+                >
+                  {slide.badge}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Dot Indicators + Play/Pause (ABAJO) */}
           <div className="flex items-center gap-2.5">
             {HERO_SLIDES.map((slide, index) => {
               const isActive = index === currentSlide;
@@ -403,34 +398,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </button>
           </div>
 
-          {/* Quick topic pills on larger screens */}
-          <div className="hidden md:flex items-center gap-2 bg-black/50 backdrop-blur-xl p-1.5 rounded-full border border-white/25 shadow-lg shadow-black/20">
-            {HERO_SLIDES.map((slide, index) => {
-              const isActive = index === currentSlide;
-              return (
-                <button
-                  key={slide.id}
-                  onClick={() => goToSlide(index)}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                    isActive
-                      ? 'bg-[#0081C0] text-white shadow-md'
-                      : 'text-white/90 hover:text-white hover:bg-white/15 border border-white/20'
-                  }`}
-                >
-                  {slide.badge}
-                </button>
-              );
-            })}
-          </div>
-
         </div>
       </div>
-
-      {/* Resplandor redondeado difuminado (Glow institucional - Opción C) en la base del Hero */}
-      <div 
-        aria-hidden="true"
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-16 sm:h-24 bg-[#0081C0] rounded-[100%] blur-[60px] opacity-40 pointer-events-none z-20"
-      />
 
     </section>
   );

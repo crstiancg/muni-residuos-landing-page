@@ -11,7 +11,7 @@ export const AppDownloadSection: React.FC = () => {
   };
 
   return (
-    <section id="descargar-app" className="py-12 sm:py-16 bg-[#F8FAFC] border-b border-slate-200 relative overflow-hidden">
+    <section id="descargar-app" className="pt-16 sm:pt-20 lg:pt-24 pb-16 sm:pb-20 lg:pb-24 bg-[#F8FAFC] relative overflow-hidden">
       
       {/* Background subtle radial texture */}
       <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
