@@ -19,7 +19,7 @@ import {
   Sparkles,
   Info
 } from 'lucide-react';
-import { CitizenReport } from '../types';
+import type { CitizenReport } from '../types';
 import { CitizenReportMap } from './CitizenReportMap';
 
 export const CitizenReportModule: React.FC = () => {

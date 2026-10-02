@@ -10,7 +10,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { NEWS_DATA } from '../data/newsData';
-import { MunicipalNewsItem } from '../types';
+import type { MunicipalNewsItem } from '../types';
 
 interface NoticiaDetalleModalProps {
   newsId: string | null;

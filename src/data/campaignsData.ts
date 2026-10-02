@@ -1,4 +1,4 @@
-import { CampaignEvent, FaqItem } from '../types';
+import type { CampaignEvent, FaqItem } from '../types';
 
 export const SUMAC_AYNI_CAMPAIGNS: CampaignEvent[] = [
   {

@@ -1,4 +1,4 @@
-import { RouteDetail } from '../types';
+import type { RouteDetail } from '../types';
 import { DEFAULT_ROUTE_COORDINATES } from './route-coordinates';
 
 export const PUNO_SECTORS = [

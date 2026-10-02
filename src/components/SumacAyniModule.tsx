@@ -8,7 +8,7 @@ import {
   Users 
 } from 'lucide-react';
 import { SUMAC_AYNI_CAMPAIGNS } from '../data/campaignsData';
-import { CampaignEvent } from '../types';
+import type { CampaignEvent } from '../types';
 import { VolunteerModal } from './VolunteerModal';
 
 export const SumacAyniModule: React.FC = () => {

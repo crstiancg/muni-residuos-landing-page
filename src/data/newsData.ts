@@ -1,4 +1,4 @@
-import { MunicipalNewsItem } from '../types';
+import type { MunicipalNewsItem } from '../types';
 export type { MunicipalNewsItem };
 
 export const NEWS_DATA: MunicipalNewsItem[] = [

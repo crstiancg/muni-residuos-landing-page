@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { PUNO_ROUTES } from '../data/punoRoutesData';
 import { getRouteCoordinates } from '../data/route-coordinates';
-import { RouteDetail } from '../types';
+import type { RouteDetail } from '../types';
 import { RouteDetailModal } from './RouteDetailModal';
 import { RouteMap } from './RouteMap';
 import { getThemeStyles } from '../config/sectionThemes';

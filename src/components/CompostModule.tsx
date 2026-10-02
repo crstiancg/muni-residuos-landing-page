@@ -8,7 +8,7 @@ import {
   Check, 
   CheckSquare
 } from 'lucide-react';
-import { CompostRegistration } from '../types';
+import type { CompostRegistration } from '../types';
 
 export const CompostModule: React.FC = () => {
   // Calculator state

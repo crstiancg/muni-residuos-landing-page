@@ -5,7 +5,7 @@ import {
   Clock
 } from 'lucide-react';
 import { NEWS_DATA } from '../data/newsData';
-import { MunicipalNewsItem } from '../types';
+import type { MunicipalNewsItem } from '../types';
 import { NoticiaDetalleModal } from './NoticiaDetalleModal';
 
 export const NewsSection: React.FC = () => {

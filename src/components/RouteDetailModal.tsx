@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Clock, Calendar, Truck, MapPin, CheckCircle, Shield } from 'lucide-react';
-import { RouteDetail } from '../types';
+import type { RouteDetail } from '../types';
 
 interface RouteDetailModalProps {
   route: RouteDetail | null;

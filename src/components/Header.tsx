@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, Smartphone, MapPin, AlertCircle, Recycle, HeartHandshake, Sprout, Newspaper, ChevronDown } from 'lucide-react';
 
-interface HeaderProps {
-  activeSection: string;
-}
 
 interface SubNavItem {
   id: string;
@@ -20,7 +17,8 @@ interface NavItem {
   subItems?: SubNavItem[];
 }
 
-export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
+export const Header: React.FC = () => {
+  const [activeSection, setActiveSection] = useState<string>('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [reciclajeOpen, setReciclajeOpen] = useState(false);
@@ -38,6 +36,32 @@ export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Scroll tracking: determina qué sección está visible
+  useEffect(() => {
+    const handleScrollTracking = () => {
+      const sections = ['rutas', 'segregacion', 'compostaje', 'sumac-ayni', 'actualidad', 'reporta', 'faq'];
+      const scrollPosition = window.scrollY + 200;
+      let foundSection = '';
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const top = element.offsetTop;
+          const height = element.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            foundSection = sectionId;
+            break;
+          }
+        }
+      }
+      setActiveSection(foundSection);
+    };
+
+    window.addEventListener('scroll', handleScrollTracking, { passive: true });
+    handleScrollTracking();
+    return () => window.removeEventListener('scroll', handleScrollTracking);
   }, []);
 
   // Reset del acordeón mobile cuando el drawer se cierra

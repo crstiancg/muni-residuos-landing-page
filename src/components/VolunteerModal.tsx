@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, CheckCircle2, HeartHandshake, User, Phone, Mail, Building, MapPin } from 'lucide-react';
-import { CampaignEvent } from '../types';
+import type { CampaignEvent } from '../types';
 
 interface VolunteerModalProps {
   campaign: CampaignEvent | null;

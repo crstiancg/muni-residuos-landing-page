@@ -1,4 +1,4 @@
-import { WasteItem } from '../types';
+import type { WasteItem } from '../types';
 
 export const WASTE_CATEGORIES_INFO = [
   {

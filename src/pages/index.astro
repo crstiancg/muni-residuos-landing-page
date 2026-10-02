@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+import { Header } from '../components/Header';
+import { HeroSection } from '../components/HeroSection';
+import { RoutesModule } from '../components/RoutesModule';
+import { SegregationModule } from '../components/SegregationModule';
+import { CompostModule } from '../components/CompostModule';
+import { SumacAyniModule } from '../components/SumacAyniModule';
+import { ActualidadSection } from '../components/ActualidadSection';
+import { CitizenReportModule } from '../components/CitizenReportModule';
+import { FaqSection } from '../components/FaqSection';
+import { Footer } from '../components/Footer';
+---
+
+<Layout>
+  <div class="min-h-screen bg-[#F8FAFC] text-[#0F172A] flex flex-col selection:bg-[#0081C0] selection:text-white">
+
+    {/* 1. Header — usa window en useEffect, necesita client:only */}
+    <Header client:only="react" />
+
+    {/* 2. Hero Section — usa window, document y timers */}
+    <HeroSection client:only="react" />
+
+    <main class="flex-1 bg-transparent">
+      {/* 1. Rutas — importa RouteMap (Leaflet) */}
+      <RoutesModule client:only="react" />
+
+      {/* 2. Segregación — puramente estático */}
+      <SegregationModule client:visible />
+
+      {/* 3. Compostaje — tiene form con useState, pero no toca window directamente */}
+      <CompostModule client:visible />
+
+      {/* 4. Sumac Ayni — tiene modal pero no toca window directamente */}
+      <SumacAyniModule client:visible />
+
+      {/* 5. Actualidad — importa NewsSection (window.location) + EnvironmentalImpactGallery (window, document) */}
+      <ActualidadSection client:only="react" />
+
+      {/* 6. Reporta a tu Vecino — importa CitizenReportMap (Leaflet) + navigator.geolocation */}
+      <CitizenReportModule client:only="react" />
+
+      {/* 7. FAQ — puramente estático con acordeón simple */}
+      <FaqSection client:visible />
+    </main>
+
+    {/* Footer — estático */}
+    <Footer />
+
+  </div>
+</Layout>
